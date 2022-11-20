@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import click
 import logging
 from pathlib import Path
 import importlib
@@ -7,7 +6,7 @@ import data
 import data.data_utils
 importlib.reload(data.data_utils)
 import data.data_utils.import_data as import_data
-
+import pandas as pd
 
 def main():
     """ Runs data processing scripts to turn raw data from (../raw) into
@@ -17,8 +16,11 @@ def main():
     df=import_data.CSVtoDF()
     df.head()
     from data.data_utils import processing
-    X_train, X_test, y_train, y_test = processing.prepro(df)
+    inputs, target, dfcsv= processing.prepro(df)
 
+    dfcsv.to_csv('O:\Term_Repo\data\processed\df.csv')
+
+    X_train, X_test, y_train, y_test = processing.split_balance(inputs, target, dfcsv)
     return(X_train, X_test, y_train, y_test)
 
     logger = logging.getLogger(__name__)

@@ -21,6 +21,6 @@ def train_grad_boost(X_train, y_train):
         'n_estimators': [300],
     }
 
-    gbc=GridSearchCV(GradientBoostingClassifier(),param_grid,cv=5, verbose = 1000)
+    gbc=GridSearchCV(GradientBoostingClassifier(),param_grid,cv=5, verbose = 1000, scoring='f1')
     gbc.fit(X_train,y_train)
     return(gbc)

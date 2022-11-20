@@ -6,6 +6,8 @@ importlib.reload(data)
 from data import make_dataset
 importlib.reload(make_dataset)
 from data import data_utils
+importlib.reload(data_utils)
+
 X_train, X_test, y_train, y_test = make_dataset.main()
 X_train
 

@@ -9,7 +9,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
-import statsmodels.api as sm
 import scipy.stats as stats
 import sklearn
 
@@ -67,21 +66,37 @@ def prepro(df):
     print('Selected Features for training ',feat[filter])
 
     #remove outliers
-    z = np.abs(stats.zscore(X_selected))
-    inputs = X_selected[(z<3).all(axis=1)]
-    target = sliced_labels[(z<3).all(axis=1)]
+    #z = np.abs(stats.zscore(X_selected))
+    #inputs_temp = X_selected[(z<3).all(axis=1)]
+    #target = sliced_labels[(z<3).all(axis=1)]
 
     #scale inputs
     sc = StandardScaler()
-    inputs = sc.fit_transform(inputs)
+    inputs = sc.fit_transform(X_selected)
 
+    #put scaled inputs into single dataframe to be returned and
+    #converted to csv in make_dataset
+    inputs_scaled = pd.DataFrame(sc.fit_transform(X_selected),
+                            columns =feat[filter])
+    df_scaled = pd.concat([inputs_scaled, sliced_labels],
+                axis = 1)
+    return(inputs, sliced_labels, df_scaled)
+    
+    
+def split_balance(inputs, target, df_scaled):
     #Train Test Split
     X_train, X_test, y_train, y_test = train_test_split(inputs, target, random_state=1234)
-
+    #Train, Test = train_test_split(df_scaled, random_state=1234)
+    #remove outliers
+    #z = np.abs(stats.zscore(Train))
+    #Train = Train[(z<3).all(axis=1)]
+    #X_train = Train.iloc[:,:-2]
+    #y_train = Train.iloc[:,-1]
     #Balance Dataset
-    sm = SMOTE()
-    X_train, y_train = sm.fit_resample(X_train, y_train)
-    X_test, y_test = sm.fit_resample(X_test, y_test)
+    #sm = SMOTE()
+    smt = SMOTE()
+    X_train, y_train = smt.fit_resample(X_train, y_train)
+    #X_test, y_test = sm.fit_resample(X_test, y_test)
     print(X_train.shape)
     print(X_test.shape)
 
