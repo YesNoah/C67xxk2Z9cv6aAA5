@@ -8,7 +8,10 @@ importlib.reload(make_dataset)
 from data import data_utils
 importlib.reload(data_utils)
 
-X_train, X_test, y_train, y_test = make_dataset.main()
+X_train, X_test, y_train, y_test = make_dataset.main(path = r'O:\Term_Repo\data\raw', 
+                                                    filename = "term-deposit-marketing-2020.csv", 
+                                                    outputfilepath='O:\Term_Repo\data\processed\df.csv'
+                                                    )
 X_train
 
 

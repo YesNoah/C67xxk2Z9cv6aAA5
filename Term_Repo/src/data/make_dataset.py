@@ -8,17 +8,17 @@ importlib.reload(data.data_utils)
 import data.data_utils.import_data as import_data
 import pandas as pd
 
-def main():
+def main(path, filename, outputfilepath):
     """ Runs data processing scripts to turn raw data from (../raw) into
         cleaned data ready to be analyzed (saved in ../processed).
     """
 
-    df=import_data.CSVtoDF()
+    df=import_data.CSVtoDF(path, filename)
     df.head()
     from data.data_utils import processing
     inputs, target, dfcsv= processing.prepro(df)
 
-    dfcsv.to_csv('O:\Term_Repo\data\processed\df.csv')
+    dfcsv.to_csv(outputfilepath)
 
     X_train, X_test, y_train, y_test = processing.split_balance(inputs, target, dfcsv)
     return(X_train, X_test, y_train, y_test)
